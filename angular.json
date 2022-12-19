@@ -3,9 +3,13 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "MedicalConsultation_FE": {
+    "auth0-demo": {
       "projectType": "application",
-      "schematics": {},
+      "schematics": {
+        "@schematics/angular:application": {
+          "strict": true
+        }
+      },
       "root": "",
       "sourceRoot": "src",
       "prefix": "app",
@@ -13,7 +17,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
-            "outputPath": "dist/medical-consultation-fe",
+            "outputPath": "dist/auth0-demo",
             "index": "src/index.html",
             "main": "src/main.ts",
             "polyfills": "src/polyfills.ts",
@@ -23,9 +27,17 @@
               "src/assets"
             ],
             "styles": [
-              "src/styles.css"
+              "node_modules/primeicons/primeicons.css",
+              "node_modules/primeng/resources/themes/saga-blue/theme.css",
+              "node_modules/primeng/resources/primeng.min.css",
+              "node_modules/bootstrap/dist/css/bootstrap.css",
+              "src/styles.scss"
             ],
-            "scripts": []
+            "scripts": [
+              "node_modules/bootstrap/dist/js/bootstrap.js",
+              "node_modules/bootstrap/dist/js/bootstrap.js",
+              "node_modules/chart.js/dist/chart.js"
+            ]
           },
           "configurations": {
             "production": {
@@ -64,10 +76,10 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
-              "browserTarget": "MedicalConsultation_FE:build:production"
+              "browserTarget": "auth0-demo:build:production"
             },
             "development": {
-              "browserTarget": "MedicalConsultation_FE:build:development"
+              "browserTarget": "auth0-demo:build:development"
             }
           },
           "defaultConfiguration": "development"
@@ -75,7 +87,7 @@
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "MedicalConsultation_FE:build"
+            "browserTarget": "auth0-demo:build"
           }
         },
         "test": {
@@ -98,7 +110,5 @@
       }
     }
   },
-  "cli": {
-    "analytics": "a6bfd6ec-efc7-4250-a92c-2bdb1e655430"
-  }
+  "defaultProject": "auth0-demo"
 }

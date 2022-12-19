@@ -1,0 +1,248 @@
+<nav *ngIf="auth.isAuthenticated$| async" class="navbar navbar-expand-lg fixed-top bg-primary navbar-primary">
+  <div class="container">
+    <a class="navbar-brand" style="color:#fffbec">Medical Consultant</a>
+    <button
+      class="navbar-toggler"
+      type="button"
+      data-mdb-toggle="collapse"
+      data-mdb-target="#navbarSupportedContent"
+      aria-controls="navbarSupportedContent"
+      aria-expanded="false"
+      aria-label="Toggle navigation"
+    >
+      <i class="fas fa-bars"></i>
+    </button>
+    <div class="navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ms-auto align-items-center">
+
+        <li class="nav-item">
+          <a class="nav-link mx-2" style="color:#fffbec" *ngIf="auth.user$ | async as user" ><i class="fas fa-user pe-2"></i>
+           Welcome,{{users}}
+          </a>
+        </li>
+        <li class="nav-item ms-3" style="color:#fffbec">
+          <a class="btn btn-black btn-rounded" *ngIf="(auth.isAuthenticated$ | async) === false"
+             (click)="login()" style="color:#fffbec"
+          ><i class="fas fa-sign-in pe-2"></i>Sign in</a>
+          <a class="btn btn-black btn-rounded" *ngIf="auth.isAuthenticated$| async"
+             (click) ="logout()" style="color:#fffbec"
+          ><i class="fas fa-sign-out pe-2"></i> Log out</a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+
+<div  *ngIf="(auth.isAuthenticated$ | async) === false" style="z-index: 10; margin-top: 100px"><!-- Section: Design Block -->
+  <section class="">
+    <!-- Jumbotron -->
+    <div class="px-4 py-5 px-md-5 text-center text-lg-start" style="background-color: hsl(0,0%,100%)">
+      <div class="container">
+        <div class="row gx-lg-5 align-items-center">
+          <div class="col-lg-6 mb-5 mb-lg-0">
+            <h1 class="my-5 display-3 fw-bold ls-tight">
+              Medical<br/>
+              <span class="text-primary">Consultant</span>
+            </h1>
+            <p style="color: hsl(217, 10%, 50.8%)">
+              System is used maintain the patient record.
+            </p>
+          </div>
+
+          <div class="col-lg-6 mb-5 mb-lg-0">
+            <div class="card">
+              <div class="card-body py-5 px-md-5">
+                <form>
+                  <!-- 2 column grid layout with text inputs for the first and last names -->
+                  <div class="form-outline mb-4">
+                    <input type="email" name="usname" [(ngModel)]="username" id="form3Example3" class="form-control" />
+                    <label class="form-label" for="form3Example3">Email address</label>
+                  </div>
+
+                  <!-- Password input -->
+                  <div class="form-outline mb-4">
+                    <input type="password" name="pwd" [(ngModel)]="pwd" id="form3Example4" class="form-control" />
+                    <label class="form-label" for="form3Example4">Password</label>
+                  </div>
+                  <!-- Submit button -->
+                  <button type="submit" (click)="adminlogin()" class="btn btn-primary btn-block mb-4">
+                    Sign up
+                  </button>
+
+                  <!-- Register buttons -->
+
+
+
+                  <!-- Register buttons -->
+                  <div class="text-center">
+
+                    <p>or sign up with:</p>
+                    <button type="submit" (click)="login()" class="btn btn-primary btn-block mb-4">
+                      Sign in Using Auth0
+                    </button>
+
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Jumbotron -->
+  </section>
+  <!-- Section: Design Block -->
+</div>
+  <div *ngIf="auth.isAuthenticated$| async" style="margin-top: 70px">
+    <div class="container mt-5 mb-3">
+      <div class="row">
+        <div class="col-md-4" *ngIf="d">
+          <div class="card p-3 mb-2">
+            <div class="d-flex justify-content-between">
+              <div class="d-flex flex-row align-items-center">
+                <div class="icon"> <i class="fa fa-hospital-user"></i> </div>
+                <div class="ms-2 c-details">
+                  <h6 class="mb-0">{{d.patientName}}</h6> <span>email : {{d.patientEmail}}</span>
+                </div>
+              </div>
+            </div>
+            <div class="mt-3">
+              <h6>Doctor: {{d.doctorName}}</h6>
+              <h6 class="mb-0">Treatment : {{d.patientReason}}</h6>
+              <div class="mt-3">
+                <div class="progress" *ngIf="d.status=='YTR'">
+                  <div class="progress-bar"  role="progressbar" style="width: 50%" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
+                </div>
+                <div class="progress" *ngIf="d.status!='YTR'">
+                  <div class="progress-bar"  role="progressbar1" style="width: 100%;background: green" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
+                </div>
+                <div class="mt-3"> <span class="text1">Admitted Date: {{d.admittedDate}} -- <span class="text2">Updated Date: {{d.returnDate}}</span></span> </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+
+
+  </div>
+<!--  <button *ngIf="(auth.isAuthenticated$ | async) === false"-->
+<!--          (click)="login()"-->
+<!--          id="login">Login</button>-->
+
+<!--  <button *ngIf="auth.isAuthenticated$| async"-->
+<!--          (click) ="logout()"-->
+<!--          id="loqout">-->
+<!--    Logout</button>-->
+<!--</div>-->
+
+<!-- Modal -->
+
+<p-dialog  [(visible)]="display"  [modal]="true" [style]="{width: '100vw'}"
+           [draggable]="false" [resizable]="false">
+  <ng-template pTemplate="header">
+    Add the Details
+  </ng-template>
+  <div>
+    <div class="grid p-fluid" style="margin-top: 10px; display: grid; grid-template-columns: auto auto; padding: 10px;">
+      <div class="col-12 md:col-4" style="padding-right: 10px;padding-top: 5px">
+        <div class="p-inputgroup">
+          <span class="p-inputgroup-addon"><i class="pi pi-pi-comment"></i></span>
+          <input type="text" pInputText [(ngModel)]="reason" name="umno" placeholder="Treatment Result">
+          <!--<p-inputMask mask="(999) 999-9999" pInputText placeholder="(999) 999-9999"></p-inputMask>-->
+        </div>
+      </div>
+    </div>
+    <!--    <span class="p-float-label">-->
+    <!--    <input id="float-input1"  [(ngModel)]="uid" type="text" pInputText>-->
+    <!--    <label for="float-input1">Name</label>-->
+    <!--    </span>-->
+
+    <!--    <span class="p-float-label">-->
+    <!--    <input id="float-input3" [(ngModel)]="email" type="text" pInputText>-->
+    <!--    <label for="float-input3">User Name</label>-->
+    <!--    </span>-->
+
+    <!--    <span class="p-float-label">-->
+    <!--    <input id="float-input4" [(ngModel)]="password" type="text" pInputText>-->
+    <!--    <label for="float-input4">Password</label>-->
+    <!--    </span>-->
+
+    <span class="p-float-label" style="margin-top: 10px;margin-bottom: 90px">
+      <!--    <p-dropdown [options]="[{name: 'Admin', code: 'admin'},-->
+      <!--        {name: 'Professor', code: 'Professor'}]" [(ngModel)]="selectedCity" optionLabel="city"></p-dropdown>-->
+    </span>
+  </div>
+  <ng-template pTemplate="footer">
+    <p-button (click)="savePost()" >Save</p-button> &nbsp;
+    <p-button (click)="display=!display" class="p-button-danger" >Close</p-button>
+  </ng-template>
+</p-dialog>
+
+<p-dialog  [(visible)]="displayUpdate"  [modal]="true" [style]="{width: '50vw'}"
+           [draggable]="false" [resizable]="false">
+  <ng-template pTemplate="header">
+    Update Student Page For {{selectedData.name}}
+  </ng-template>
+  <div>
+    <div class="grid p-fluid" style="margin-top: 10px; display: grid; grid-template-columns: auto auto; padding: 10px;">
+
+      <div class="col-12 md:col-4" style="padding-right: 10px;padding-top: 5px">
+        <div class="p-inputgroup">
+          <span class="p-inputgroup-addon"><i class="pi pi-phone"></i></span>
+          <input type="text" pInputText [(ngModel)]="updateNo" name="uMno" placeholder="Mobile Number">
+          <!--          <p-inputMask mask="(999) 999-9999" pInputText placeholder="(999) 999-9999"></p-inputMask>-->
+        </div>
+      </div>
+      <div class="col-12 md:col-4" style="padding-right: 10px;padding-top: 5px">
+        <div class="p-inputgroup">
+          <span class="p-inputgroup-addon"><i class="pi pi-book"></i></span>
+          <input type="text" pInputText [(ngModel)]="updateCourse" name="uc" placeholder="Course">
+        </div>
+      </div>
+
+      <div class="col-12 md:col-4" style="padding-right: 10px;padding-top: 5px">
+        <div class="p-inputgroup">
+          <span class="p-inputgroup-addon"><i class="pi pi-briefcase"></i></span>
+          <input type="text" pInputText [(ngModel)]="updateDep" name="updateDep" placeholder="Department">
+        </div>
+      </div>
+
+    </div>
+
+    <!--    <span class="p-float-label">-->
+    <!--    <input id="float-input1"  [(ngModel)]="uid" type="text" pInputText>-->
+    <!--    <label for="float-input1">Name</label>-->
+    <!--    </span>-->
+
+    <!--    <span class="p-float-label">-->
+    <!--    <input id="float-input3" [(ngModel)]="email" type="text" pInputText>-->
+    <!--    <label for="float-input3">User Name</label>-->
+    <!--    </span>-->
+
+    <!--    <span class="p-float-label">-->
+    <!--    <input id="float-input4" [(ngModel)]="password" type="text" pInputText>-->
+    <!--    <label for="float-input4">Password</label>-->
+    <!--    </span>-->
+
+    <span class="p-float-label" style="margin-top: 10px;margin-bottom: 90px">
+
+
+
+      <!--    <p-dropdown [options]="[{name: 'Admin', code: 'admin'},-->
+      <!--        {name: 'Professor', code: 'Professor'}]" [(ngModel)]="selectedCity" optionLabel="city"></p-dropdown>-->
+    </span>
+
+  </div>
+  <ng-template pTemplate="footer">
+    <p-button (click)="updateDetails()" >Save</p-button> &nbsp;
+    <p-button (click)="displayUpdate=!displayUpdate" class="p-button-danger" >Close</p-button>
+  </ng-template>
+</p-dialog>
+
+<p-toast></p-toast>
+
+<p-confirmDialog [style]="{width: '50vw'}" [baseZIndex]="10000" rejectButtonStyleClass="p-button-text"></p-confirmDialog>

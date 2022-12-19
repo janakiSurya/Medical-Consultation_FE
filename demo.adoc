@@ -1,0 +1,80 @@
+:experimental:
+:commandkey: &#8984;
+:toc: macro
+
+= Angular + Auth0 Demo Steps
+
+If you're developing an Angular app today, you might need a way to authenticate your users. That's where OpenID Connect (OIDC) can help you. OIDC is a layer on top of OAuth 2.0 that provides identity.
+
+In this tutorial, I'll how you to add OIDC authentication with Auth0 to a new Angular app in just a few steps.
+
+**Prerequisites:**
+
+- https://nodejs.org[Node.js] v14
+
+toc::[]
+
+== Create an Angular app
+
+. Create a new Angular app with routing enabled:
+
+    npx @angular/cli@13 new auth0-demo --routing
+
+== Add Auth with OpenID Connect
+
+. Install the https://github.com/auth0/auth0-cli#installation[Auth0 CLI] and run `auth0 login` to register your account.
+
+. Run `auth0 apps create`. Specify a name and description of your choosing.
+
+. Select **Single Page Web Application** and use `http://localhost:4200/home` for the Callback URL. Specify `http://localhost:4200` for the rest of the URLs.
+
+. Use https://github.com/oktadev/schematics#angular--auth0[OktaDev Schematics] to add OAuth 2.0 and OIDC support to your Angular app.
+
+    ng add @oktadev/schematics --auth0
+
+. View changes using `git diff` or in https://github.com/oktadev/auth0-angular-example/pull/1/files[this pull request].
+
+.Use the Auth0 Console instead of the CLI
+****
+You can also use the Auth0 Console to create an OIDC app:
+
+* https://auth0.com/auth/login[Log in] to Auth0 or https://auth0.com/signup[create an account] if you don't have one. Go to **Applications** > **Create Application**.
+* Choose **Single Page Web Applications** as the application type and click **Create**.
+* Click **Angular**, then the **Settings** tab.
+* Add `http://localhost:4200/home` as an Allowed Callback URL and `http://localhost:4200` as a Logout URL.
+* Specify `http://localhost:4200` as an Allowed Origin and click **Save Changes** at the bottom.
+****
+
+=== Test your Angular authentication flow
+
+. Run `ng serve` and you'll see a login button at `http://localhost:4200/home`.
+
+. Show authentication flow.
+
+=== Display the authenticated user's name
+
+To display the authenticated user's name, you can use the `user$` observable on the `AuthService` instance.
+
+. Modify `src/app/home/home.component.html` to display a welcome message to the user.
++
+----
+<div>
+  <button *ngIf="(auth.isAuthenticated$ | async) === false"
+          (click)="login()" id="login">Login</button>
+  <div *ngIf="auth.user$ | async as user">
+    <h2>Welcome, {{user?.name}}!</h2>
+  </div>
+  <button *ngIf="auth.isAuthenticated$ | async"
+          (click)="logout()" id="logout">Logout</button>
+</div>
+----
+
+. Refresh your app, and you should see your name displayed.
+
+== Angular FTW!
+
+✅ Find the code on GitHub: https://github.com/oktadev/auth0-angular-example[@oktadev/auth0-angular-example]
+
+🚀 Check out my https://infoq.com/minibooks/angular-mini-book/[Angular Mini-Book]!
+
+

@@ -1,0 +1,113 @@
+<nav class="navbar navbar-expand-lg fixed-top bg-primary navbar-primary">
+  <div class="container">
+    <a class="navbar-brand" style="color:#fffbec">Medical Consultant</a>
+    <button
+      class="navbar-toggler"
+      type="button"
+      data-mdb-toggle="collapse"
+      data-mdb-target="#navbarSupportedContent"
+      aria-controls="navbarSupportedContent"
+      aria-expanded="false"
+      aria-label="Toggle navigation"
+    >
+      <i class="fas fa-bars"></i>
+    </button>
+    <div class="navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ms-auto align-items-center">
+
+        <li class="nav-item">
+          <a class="nav-link mx-2" style="color:#fffbec" ><i class="fas fa-user pe-2"></i>
+            Welcome,{{users}}
+          </a>
+        </li>
+        <li class="nav-item ms-3">
+          <a class="btn btn-black btn-rounded" style="color:#fffbec" href="#"
+          ><i class="fas fa-sign-out pe-2"></i> Log out</a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+
+<div style="margin-top:70px">
+  <div class="container mt-5 mb-3">
+    <div class="row">
+      <div class="col-md-4" *ngFor="let d of data">
+        <div class="card p-3 mb-2">
+          <div class="d-flex justify-content-between">
+            <div class="d-flex flex-row align-items-center">
+              <div class="icon"> <i class="fa fa-hospital-user"></i> </div>
+              <div class="ms-2 c-details">
+                <h6 class="mb-0">{{d.patientName}}</h6> <span>email : {{d.patientEmail}}</span>
+              </div>
+            </div>
+            <div class="badge"> <span><a (click)="openupdate(d)" data-mdb-toggle="modal" data-mdb-target="#exampleModal">Update</a></span> </div>
+            <div class="badge1"> <span><a (click)="delete(d.patientEmail)">Delete</a></span> </div>
+          </div>
+          <div class="mt-3">
+            <h6>Doctor: {{d.doctorName}}</h6>
+            <h6 class="mb-0">Treatment : {{d.patientReason}}</h6>
+            <div class="mt-3">
+              <div class="progress" *ngIf="d.status=='YTR'">
+                <div class="progress-bar"  role="progressbar" style="width: 50%" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
+              </div>
+              <div class="progress" *ngIf="d.status!='YTR'">
+                <div class="progress-bar"  role="progressbar1" style="width: 100%;background: green" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
+              </div>
+              <div class="mt-3"> <span class="text1">Admitted Date: {{d.admittedDate}} -- <span class="text2">Updated Date: {{d.returnDate}}</span></span> </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+<!-- Modal -->
+
+<p-dialog  [(visible)]="display"  [modal]="true" [style]="{width: '100vw'}"
+           [draggable]="false" [resizable]="false">
+  <ng-template pTemplate="header">
+    Update the Treatment Result for {{selectedValue.patientName}}
+  </ng-template>
+  <div>
+    <div class="grid p-fluid" style="margin-top: 10px; display: grid; grid-template-columns: auto auto; padding: 10px;">
+      <div class="col-12 md:col-4" style="padding-right: 10px;padding-top: 5px">
+        <div class="p-inputgroup">
+          <span class="p-inputgroup-addon"><i class="pi pi-pi-comment"></i></span>
+          <input type="text" pInputText [(ngModel)]="reason" name="umno" placeholder="Treatment Result">
+          <!--<p-inputMask mask="(999) 999-9999" pInputText placeholder="(999) 999-9999"></p-inputMask>-->
+        </div>
+      </div>
+    </div>
+    <!--    <span class="p-float-label">-->
+    <!--    <input id="float-input1"  [(ngModel)]="uid" type="text" pInputText>-->
+    <!--    <label for="float-input1">Name</label>-->
+    <!--    </span>-->
+
+    <!--    <span class="p-float-label">-->
+    <!--    <input id="float-input3" [(ngModel)]="email" type="text" pInputText>-->
+    <!--    <label for="float-input3">User Name</label>-->
+    <!--    </span>-->
+
+    <!--    <span class="p-float-label">-->
+    <!--    <input id="float-input4" [(ngModel)]="password" type="text" pInputText>-->
+    <!--    <label for="float-input4">Password</label>-->
+    <!--    </span>-->
+
+    <span class="p-float-label" style="margin-top: 10px;margin-bottom: 90px">
+      <!--    <p-dropdown [options]="[{name: 'Admin', code: 'admin'},-->
+      <!--        {name: 'Professor', code: 'Professor'}]" [(ngModel)]="selectedCity" optionLabel="city"></p-dropdown>-->
+    </span>
+  </div>
+  <ng-template pTemplate="footer">
+    <p-button (click)="update()" >Save</p-button> &nbsp;
+    <p-button (click)="display=!display" class="p-button-danger" >Close</p-button>
+  </ng-template>
+</p-dialog>
+
+
+<p-confirmDialog [style]="{width: '50vw'}" [baseZIndex]="10000" rejectButtonStyleClass="p-button-text"></p-confirmDialog>
